@@ -1,13 +1,12 @@
 # Sudo-Mask
-Fake sudo mask buildpack for heroku
-# Heroku Root buildpack
+Fake sudo mask buildpack for heroku(Heroku Root buildpack)
 
 
-## Introduction
+# Introduction
 
 A Heroku Buildpack that enables root permisions using chroot jail
 
-## Applying the buildpack
+# Applying the buildpack
 
 --------------------------------------------------
 NOTE: Make sure you are logged in with heroku CLI
@@ -23,15 +22,7 @@ And this is to add to existing app and make sure you are connected to the app if
 
 $ heroku git:remote -a (app-name-here)
 
-##Contributors
+# Contributors
 
 This buildpack is based on [fakesu](https://github.com/fabiokung/heroku-buildpack-fakesu)
 buildpack by @fabiokung. buildpack by @fabiokung and chroot+aptitude heroku buildpack by [Gabriel Falcão] (https://github.com/gabrielfalcao)
-
-##Lisense
-
-Common Development and Distribution License (CDDL-1.0)
-
-
-
-
