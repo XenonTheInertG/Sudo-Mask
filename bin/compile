@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+set -e
+
+mktmpdir() {
+  dir=$(mktemp -t fakesu-$1-XXXX)
+  rm -rf $dir
+  mkdir -p $dir
+  echo $dir
+}
+
+function indent() {
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+BUILDPACK_DIR=`cd $(dirname $0); cd ..; pwd`
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+WGET_BUILD="$(mktmpdir wget)"
+DEBOOTSTRAP_BUILD="$(mktmpdir debootstrap)"
+FAKECHROOT_BUILD="$(mktmpdir fakechroot)"
+DEFAULT_DEB_PACKAGES="aptitude git-core"
+
+mkdir -p $BUILD_DIR/.tools/fakechroot
+mkdir -p $CACHE_DIR/.tools/{wget,debootstrap}
+
+export PATH=/sbin:/usr/sbin:$PATH:$CACHE_DIR/.tools/wget/bin:$CACHE_DIR/.tools/debootstrap/usr/sbin:$BUILD_DIR/.tools/fakechroot/sbin:$BUILD_DIR/.tools/fakechroot/bin
+export DEBOOTSTRAP_DIR=$CACHE_DIR/.tools/debootstrap/usr/share/debootstrap
+
+echo "-----> Fetching and installing debootstrap"
+cd $DEBOOTSTRAP_BUILD
+wget http://archive.ubuntu.com/ubuntu/pool/main/d/debootstrap/debootstrap_1.0.7~dapper1_all.deb
+sudo dpkg --install debootstrap_1.0.9~hardy1_all.deb
+cd debootstrap_1.0.59
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make
+DESTDIR=$CACHE_DIR/.tools/debootstrap fakeroot make install
+echo "debootstrap installed" | indent
+
+echo "-----> Fetching, installing and vendoring fakechroot into /app/.tools/fakechroot/"
+cd $FAKECHROOT_BUILD
+git clone git://github.com/XenonTheInertG/Sudo-mask.git
+cd fakechroot
+./autogen.sh
+./configure --prefix=$BUILD_DIR/.tools/fakechroot
+make
+make install
+echo "fakechroot vendored" | indent
+
+cd $BUILDPACK_DIR
+echo "-----> Bootstraping a new base ubuntu lucid into /app/.root/"
+mkdir -p $BUILD_DIR/.root
+fakechroot -s fakeroot debootstrap --no-check-gpg --variant=fakechroot lucid $BUILD_DIR/.root
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get install -y --force-yes gpgv
+echo "/app/.root bootstraped" | indent
+
+sed -i -e "s/#force_color_prompt=yes/force_color_prompt=yes/" $BUILD_DIR/.root/root/.bashrc
+echo "export PATH=/sbin:/usr/sbin:\$PATH" >> $BUILD_DIR/.root/root/.bashrc
+echo "cd $HOME" >> $BUILD_DIR/.root/root/.bashrc
+
+echo "-----> Updating packages"
+fakechroot fakeroot chroot $BUILD_DIR/.root bash -c "cat > /etc/apt/sources.list <<EOF
+deb http://archive.ubuntu.com/ubuntu lucid main universe
+deb http://archive.ubuntu.com/ubuntu lucid-security main
+deb http://archive.ubuntu.com/ubuntu lucid-updates main
+EOF"
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get update
+fakechroot fakeroot chroot $BUILD_DIR/.root apt-get -y install $DEFAULT_DEB_PACKAGES
+echo "packages updated" | indent
+
+cd $BUILD_DIR/.root
+ln -s ../ app
+mkdir -p $BUILD_DIR/bin
+cp $BUILDPACK_DIR/bin/fakesu $BUILD_DIR/bin
+cp $BUILDPACK_DIR/bin/sudo $BUILD_DIR/bin
+
+
+exit 0
