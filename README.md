@@ -25,4 +25,4 @@ $ heroku git:remote -a (app-name-here)
 # Contributors
 
 This buildpack is based on [fakesu](https://github.com/fabiokung/heroku-buildpack-fakesu)
-buildpack by @fabiokung. buildpack by @fabiokung and chroot+aptitude heroku buildpack by [Gabriel Falcão] (https://github.com/gabrielfalcao)
+buildpack by @fabiokung. buildpack by @fabiokung and chroot+aptitude heroku buildpack by [Gabriel Falcão](https://github.com/gabrielfalcao)
