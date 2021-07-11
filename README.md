@@ -26,4 +26,4 @@ Or simply deploy the app first,then go to settings. Scroll down.
 
 
 # Contributors
-This buildpack is on  [fakesu](https://github.com/fabiokung/heroku-buildpack-fakesu)
+This buildpack is based on  [fakesu](https://github.com/fabiokung/heroku-buildpack-fakesu)
