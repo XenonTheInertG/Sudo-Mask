@@ -19,5 +19,11 @@ $ heroku buildpacks:add https://github.com/XenonTheInertG/Sudo-Mask.git
 ```bash
 $ heroku git:remote -a (app-name-here)
 ```
+# Alternative method:
+Or simply deploy the app first,then go to settings. Scroll down. 
+> Add Buildpack
+>paste : `https://github.com/XenonTheInertG/Sudo-Mask`
+
+
 # Contributors
-This buildpack is on Fabioking
+This buildpack is on  [fakesu](https://github.com/fabiokung/heroku-buildpack-fakesu)
