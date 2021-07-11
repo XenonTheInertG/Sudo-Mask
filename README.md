@@ -25,6 +25,7 @@ $ heroku git:remote -a (app-name-here)
 # Alternative method:
 Or simply deploy the app first,then go to settings. Scroll down. 
 > Add Buildpack
+
 >paste : `https://github.com/XenonTheInertG/Sudo-Mask`
 
 
@@ -33,7 +34,7 @@ Or simply deploy the app first,then go to settings. Scroll down.
     $ ls
     Gemfile      Gemfile.lock web.rb
 
-    $ heroku create -s cedar -b http://github.com/fabiokung/heroku-buildpack-fakesu.git
+    $ heroku create -s cedar -b http://github.com/XenonTheInertG/Sudo-Mask.git
 
     $ git push heroku master
     wait...
