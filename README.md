@@ -8,9 +8,9 @@ A Heroku Buildpack that enables root permisions using chroot jail
 --------------------------------------------------
 NOTE: Make sure you are logged in with heroku CLI
 --------------------------------------------------
-
+```bash
 $ heroku create --buildpack https://github.com/XenonTheInertG/Sudo-Mask.git
-
+```
 - Copy this code to create a heroku app with this buildpack
 
 $ heroku buildpacks:add https://github.com/XenonTheInertG/Sudo-Mask.git
