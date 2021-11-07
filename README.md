@@ -1,6 +1,8 @@
 # Sudo-Mask
+
+[![Shell check](https://github.com/XenonTheInertG/Sudo-Mask/actions/workflows/shell_check.yml/badge.svg)](https://github.com/XenonTheInertG/Sudo-Mask/actions/workflows/shell_check.yml)
 Fake sudo mask buildpack for heroku(Heroku Root buildpack)
-- As we all know heroku doesn't let users to use Sudo commands or they don't have a support for sudo. Recently i was making a bot & deployed it to heroku but the problem was the needs root. I searched in google & found Fabioking's fakechroot buildpack. Tried to install it but it was broken af. It was a buildpack from 2013,so i made my own buildpack:)
+- As we all know heroku doesn't let users to use Sudo commands or they don't have a support for sudo. Recently i was making a bot & deployed it to heroku but the problem was that it needed root. I searched in google & found Fabioking's fakechroot buildpack. Tried to install it but it was broken af. It was a buildpack from 2013,so i made my own buildpack:)
 
 
 - `Heroku buildpack that creates a chroot jail, and allows users to run commands as (fake)**root** inside it.`
