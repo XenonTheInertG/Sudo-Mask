@@ -2,7 +2,7 @@ name: Shell check
 
 on:
   push:
-    branches: master
+    branches: main
 
 jobs:
   shellcheck:
